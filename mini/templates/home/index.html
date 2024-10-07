@@ -88,14 +88,14 @@
 
     <nav>
         <a href="#">Home</a>
-        <a href="#">About</a>
+        <a href="#"> {% if user in request.session %} Hello, {{request.session.user}} {% else %} Hello, Visitor! {% endif %}</a>
         <a href="#">Contact</a>
     </nav>
 
     <section>
         <div class="login-register">
-            <button onclick="window.location.href='login.html'">Login</button>
-            <button onclick="window.location.href='register.html'">Register</button>
+            <button onclick="window.location.href='login'">Login</button>
+            <button onclick="window.location.href='login'">Register</button>
         </div>
 
         <h2>Upcoming Blood Donation Camps</h2>

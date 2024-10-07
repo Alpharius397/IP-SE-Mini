@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            width: 800px;
+        }
+        .form-box {
+            background-color: white;
+            width: 45%;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-box button:hover {
+            background-color: #e43c3c;
+        }
+        .form-box p {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .form-box a {
+            color: #ff4c4c;
+            text-decoration: none;
+        }
+        .form-box a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <!-- Login Form -->
+        <div class="form-box">
+            <h2>Login</h2>
+            <form action="/login" method="POST">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#register">Register here</a></p>
+        </div>
+
+        <!-- Register Form -->
+        <div class="form-box">
+            <h2>Register</h2>
+            <form action="/register" method="POST">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#login">Login here</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

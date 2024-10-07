@@ -19,6 +19,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('super_admin/', admin.site.urls),
-    path('', views.home_view )
+    path('super_admin/', admin.site.urls, name='super-admin'),
+    path('', views.home_view,name='home'),
+    path('login/',views.donor_login,name='login')
 ]

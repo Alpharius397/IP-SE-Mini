@@ -1,6 +1,8 @@
 from typing import Any
 from django.db import models
 from datetime import datetime
+from django.contrib.auth.hashers import make_password, check_password
+
 class BloodTypes(models.TextChoices):
     AX = "A+"
     A_ = "A-"
@@ -15,6 +17,7 @@ class Admin(models.Model):
     
     name = models.CharField(max_length=50,blank=False)
     id = models.IntegerField(primary_key=True,blank=False)
+    passwrd = models.CharField(blank=False,max_length=225,default=make_password('LUPERCAL'))
     dob = models.DateField(blank=False)
     isAdmin = models.BooleanField(default=False)
     isCampOrg = models.BooleanField(default=False)
@@ -27,6 +30,7 @@ class Admin(models.Model):
 class Donor(models.Model):
     name = models.CharField(max_length=50,blank=False)
     id = models.IntegerField(primary_key=True,blank=False)
+    passwrd = models.CharField(blank=False,max_length=225,default=make_password('LUPERCAL'))
     dob = models.DateField(blank=False)
     weight = models.IntegerField()
     height = models.IntegerField()

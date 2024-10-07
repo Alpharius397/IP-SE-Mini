@@ -1,0 +1,30 @@
+venv create:
+    py -m venv django
+    python3 -m venv {location to add}  (Linux/Windows)
+
+venv activation: 
+    django\Scripts\activate.bat (in CMD)
+    django/bin/activate (linux)
+
+django Dependencies:
+    pip3 install django==5.0.7
+    pip3 install Pillow==10.4.0
+
+open shell DB:
+    py manage.py shell
+
+changes on model:
+    py manage.py makemigrations
+    python manage.py migrate --run-syncdb # makes tables for every app
+
+make a new project:
+    django-admin startproject mysite
+    
+make a new app/webpage
+    django-admin startapp base
+    
+start server (location: where manage.py is):
+    py manage.py runserver
+
+create superuser:
+    py manage.py createsuperuser { if in doubt run => py manage.py }

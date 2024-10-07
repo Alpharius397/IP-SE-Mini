@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Camp Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff4c4c;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+        .login-register {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .login-register button {
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .login-register button:hover {
+            background-color: #e43c3c;
+        }
+        .camp-list {
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .camp-list h3 {
+            background-color: #ff4c4c;
+            color: white;
+            padding: 10px;
+            margin: 0;
+        }
+        .camp {
+            background-color: white;
+            margin: 10px 0;
+            padding: 15px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to the Blood Donation Camp Portal</h1>
+        <p>Your contribution can save lives!</p>
+    </header>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+
+    <section>
+        <div class="login-register">
+            <button onclick="window.location.href='login.html'">Login</button>
+            <button onclick="window.location.href='register.html'">Register</button>
+        </div>
+
+        <h2>Upcoming Blood Donation Camps</h2>
+
+        <div class="camp-list">
+            {% for i in camps %}
+            <div class="camp">
+                <h3>Camp {{i.name}}: {{i.loc}}</h3>
+                <p>Hosted By: {{i.owned_id}}</p>
+                <p>Start Date: {{i.start}}</p>
+                <p>End Date: {{i.end}}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Blood Donation Camp Portal </p>
+    </footer>
+
+</body>
+</html>

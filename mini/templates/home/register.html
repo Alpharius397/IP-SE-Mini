@@ -95,13 +95,11 @@
             background-color: white;
             color: #ff4c4c;
             border: 1px solid #ff4c4c;
-            cursor: default;
         }
         #off{
             background-color: #ff4c4c;
             color: white;
-            border: none;
-            cursor: pointer;
+            border: none
         }
         .error{
             color: #e43c3c;
@@ -136,51 +134,67 @@
         <a href="#"></a>
         <a href="#"></a>
     </nav>
+
     <section>
         <div class="form-container">
             <div class="switch">
-                <button class="admin" id="off">Admin Login</button>
-                <button class="donor" id="active">Donor Login</button>
+                <button class="admin" id="off">Admin Register</button>
+                <button class="donor" id="active">Donor Register</button>
             </div>
 
-            <!-- Login Form -->
-            <div class="form-box login">
-                <h2>Login</h2>
-                <form action="{% url 'login' %}" method="POST">
+            <!-- Register Form -->
+            <div class="form-box register">
+                <h2>Register</h2>
+                <form action="{% url 'register' %}" method="POST" onsubmit="return check_wrapper();">
                     {% csrf_token %}
-                    <input type="user" name="user" placeholder="User ID" required>
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="user" placeholder="User ID" required>
+                    <input type="password" class="password" name="password" placeholder="Password" required>
+                    <input type="password" class="password" name="confirm_password" placeholder="Confirm Password" required>
                     <input type="text" name="who" class="who" value="admin" style="display:none;">
-                    <p class="error">{% if error %} {{error}} {% endif %}</p>
-                    <input type="submit" value="Login">
-                    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+                    <input type="submit" value="Register">
+                    <p class="error"></p>
+                    <p>Already have an account? <a href="{% url 'login' %}" id="link-login"> Login here</a></p>
                 </form>
             </div>
         </div>
     </section>
 </body>
 <script>
-    const login_form = document.querySelector(".form-box.login");
+    const register_form = document.querySelector(".form-box.register");
     const who_id = document.querySelectorAll('.who');
 
     const donor_btn = document.querySelector('button.donor');
     const admin_btn = document.querySelector('button.admin');
+
+    const password = document.querySelectorAll('.password');
 
     const error = document.querySelector('.error');
 
     donor_btn.addEventListener('click', () => {switch_role(false);});
     admin_btn.addEventListener('click', () => {switch_role(true);});
 
+    password.forEach(pass => { pass.addEventListener('keyup', () => {error.innerHTML = (check_pwd(password))?``:`Password Do Not Match!`;})});
+
     switch_role(false);
+
+    {% if error %} alert('{{error}}'); {% endif %}
 
     function check_wrapper(){
         return check_pwd(password);
     }
 
+
     function switch_role(isAdmin){
         who_id.forEach(who => { who.setAttribute('value', isAdmin? 'admin':'donor'); });
         donor_btn.id = isAdmin? 'off':'active';
         admin_btn.id = isAdmin? 'active':'off';
+    }
+
+    function check_pwd(password){
+        user_pass_1 = password[0].value;
+        user_pass_2 = password[1].value;
+
+        return user_pass_1==user_pass_2;
     }
 
 </script>

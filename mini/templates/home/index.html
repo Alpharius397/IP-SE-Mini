@@ -40,7 +40,7 @@
             justify-content: center;
             margin: 20px 0;
         }
-        .login-register button {
+        .login-register button, input[type='submit'] {
             background-color: #ff4c4c;
             color: white;
             border: none;
@@ -49,7 +49,7 @@
             cursor: pointer;
             font-size: 18px;
         }
-        .login-register button:hover {
+        .login-register button:hover,input[type='submit']:hover {
             background-color: #e43c3c;
         }
         .camp-list {
@@ -87,17 +87,25 @@
     </header>
 
     <nav>
-        <a href="#">Home</a>
-        <a href="#"> {% if user in request.session %} Hello, {{request.session.user}} {% else %} Hello, Visitor! {% endif %}</a>
+        <a href="/">Home</a>
+        <a href="#"> {% if request.session.user is not None %} Hello, {{request.session.user}} {% else %} Hello, Visitor! {% endif %}</a>
         <a href="#">Contact</a>
     </nav>
 
     <section>
-        <div class="login-register">
-            <button onclick="window.location.href='login'">Login</button>
-            <button onclick="window.location.href='login'">Register</button>
-        </div>
-
+        {% if request.session.user %}
+            <div class="login-register">
+                <form action="{% url 'logout' %}" method="post" onsubmit="return alert('Are you sure about this');">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+            </div>
+        {% else %}
+            <div class="login-register">
+                <button onclick="window.location.href='{% url 'login' %}'">Login</button>
+                <button onclick="window.location.href='{% url 'register' %}'">Register</button>
+            </div>
+        {%  endif %}
         <h2>Upcoming Blood Donation Camps</h2>
 
         <div class="camp-list">
@@ -118,4 +126,9 @@
     </footer>
 
 </body>
+<script>
+
+    {% if error %} alert('{{error}}'); {% endif %}
+
+</script>
 </html>

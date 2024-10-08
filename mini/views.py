@@ -21,25 +21,53 @@ def home_view(req,**opt):
     
     return render(req,'home/index.html',context=context)
 
-def login_view(req):
-    return render(req,'home/login.html')
+def login_view(req,**opt):
+    if req.method=='GET': 
+        context = {i:j for i,j in opt.items()}
+        print(context)
+        return render(req,'home/login.html',context=context)
+    
+    if req.method=='POST':
+        user,password,who = req.POST.get('user',None), req.POST.get('password',None), req.POST.get('who',None)
+        if (not user) or (not password) or (who not in ['donor','admin']): return redirect(reverse('login',kwargs={'error':'Auth Error'}))
+        
+        userThis = models.Donor.objects.filter(id=user).values() if who=='donor' else models.Admin.objects.filter(id=user).values()
+    
+        if len(userThis)<1:
+            return redirect(reverse('login',kwargs={'error':'User not Found'}))
+        
+        userThis = userThis[0]
+        
+        if check_password(password,userThis['passwrd']):
+            req.session['user'] = userThis['name']
+            return redirect(reverse('home',kwargs={'error':'User Authethicated, Welcome!'}))
 
-def donor_login(req):
-    user, passwrd = req.POST.get('user',None), req.POST.get('passwrd',None)
-    
-    if not user or not passwrd: return redirect(reverse('home'))
-    
-    userThis = models.Donor.objects.filter(id=user).values()
-    
-    if userThis:
-        return redirect(reverse('home',kwargs={"error":'Authetication error'}))
-    
-    userThis = userThis[0]
-    
-    if check_password(passwrd,userThis['passwrd']):
-        req.session['user'] = userThis['name']
-        return redirect(reverse('home',kwargs={"error":'Authetication error'}))
+        else:
+            return redirect(reverse('login',kwargs={'error':'Password Do Not Match!'}))
 
-    else:
-        return redirect(reverse('home',kwargs={"error":'Authetication error'}))
-       
+def register_view(req,**opt):
+    if req.method=='GET': 
+        context = {i:j for i,j in opt.items()}
+        return render(req,'home/register.html',context=context)
+    
+    if req.method=='POST':
+        user,password,who = req.POST.get('user',None), req.POST.get('password',None), req.POST.get('who',None)
+        if (not user) or (not password) or (who not in ['donor','admin']): return redirect(reverse('register',kwargs={'error':'User not Found'}))
+        
+        userThis = models.Donor.objects.filter(id=user).values() if who=='donor' else models.Admin.objects.filter(id=user).values()
+    
+        if len(userThis)<1:
+            return redirect(reverse('register',kwargs={'error':'User not Found'}))
+        
+        userThis = userThis[0]
+        
+        if check_password(password,userThis['passwrd']):
+            req.session['user'] = userThis['name']
+            return redirect(reverse('home',kwargs={'error':'User Authethicated, Welcome!'}))
+
+        else:
+            return redirect(reverse('register',kwargs={'error':'Password Do Not Match!'}))
+        
+def logout_user(req):
+    req.session['user'] = None
+    return redirect(reverse('home',kwargs={'error':'Logout Successully'}))

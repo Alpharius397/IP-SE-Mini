@@ -21,5 +21,10 @@ from . import views
 urlpatterns = [
     path('super_admin/', admin.site.urls, name='super-admin'),
     path('', views.home_view,name='home'),
-    path('login/',views.donor_login,name='login')
+    path('<str:error>', views.home_view,name='home'),
+    path('login/',views.login_view,name='login'), # type: ignore
+    path('login/<str:error>/',views.login_view,name='login'), # type: ignore
+    path('register/',views.register_view,name='register'), # type: ignore
+    path('register/<str:error>/',views.register_view,name='register'), # type: ignore
+    path('logout/',views.logout_user,name='logout')
 ]

@@ -126,6 +126,17 @@
             margin: auto;
             margin-top: 50px;
         }
+
+        .class-block label{
+            width: 150px;
+            height: 150px;
+        }
+
+        .class-block input[type='radio']{
+            display: inline-flex;
+            width: 50%;
+        }
+
     </style>
 </head>
 <body>
@@ -142,6 +153,8 @@
                 <button class="donor" id="active">Donor Register</button>
             </div>
 
+            {}
+
             <!-- Register Form -->
             <div class="form-box register">
                 <h2>Register</h2>
@@ -151,8 +164,11 @@
                     <input type="password" class="password" name="password" placeholder="Password" required>
                     <input type="password" class="password" name="confirm_password" placeholder="Confirm Password" required>
                     <input type="text" name="who" class="who" value="admin" style="display:none;">
+
+                    <div class="class-block"></div>
+                    
                     <input type="submit" value="Register">
-                    <p class="error"></p>
+                    <p class="error">{% if error %} {{error}} {% endif %}</p>
                     <p>Already have an account? <a href="{% url 'login' %}" id="link-login"> Login here</a></p>
                 </form>
             </div>
@@ -162,6 +178,7 @@
 <script>
     const register_form = document.querySelector(".form-box.register");
     const who_id = document.querySelectorAll('.who');
+    const form_block = document.querySelector('.class-block');
 
     const donor_btn = document.querySelector('button.donor');
     const admin_btn = document.querySelector('button.admin');
@@ -188,6 +205,7 @@
         who_id.forEach(who => { who.setAttribute('value', isAdmin? 'admin':'donor'); });
         donor_btn.id = isAdmin? 'off':'active';
         admin_btn.id = isAdmin? 'active':'off';
+        form_block.innerHTML = isAdmin? admin_block():donor_block();
     }
 
     function check_pwd(password){
@@ -195,6 +213,36 @@
         user_pass_2 = password[1].value;
 
         return user_pass_1==user_pass_2;
+    }
+
+    function admin_block(){
+        return `
+                Position <br>
+                <label for='where'>Admin</label> <input type='radio' name='where' value='Admin' required><br> 
+                <label for='where'>Camp Orangiser</label> <input type='radio' name='where' value='CampOrg'required><br>
+                <label for='where'>Hospital Admins</label> <input type='radio' name='where' value='Hosp'required><br> 
+                <input type='text' name='belongs' required>         
+            `
+    }
+
+    function donor_block(){
+        return `
+                <input type='number' name='height' min="1" max="300" placeholder='Height (in cm)'>
+                <input type='number' name='weight' min="1" max="300" placeholder='weight (in kg)'> 
+                <input type='textarea' name='addr' placeholder='Address'>
+                <select name='blood' required placeholder='Blood Type'>
+                    <option value='A+'>A+</option>
+                    <option value='A-'>A-</option>
+                    <option value='B+'>B+</option>
+                    <option value='B-'>B-</option>
+                    <option value='O+'>O+</option>
+                    <option value='O-'>O-</option>
+                    <option value='AB+'>AB+</option>
+                    <option value='AB-'>AB-</option>
+                </select>
+
+
+            `
     }
 
 </script>

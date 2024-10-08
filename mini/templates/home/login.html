@@ -173,6 +173,9 @@
 
     switch_role(false);
 
+    {% if error %} alert('{{error}}'); {% endif %}
+
+
     function check_wrapper(){
         return check_pwd(password);
     }

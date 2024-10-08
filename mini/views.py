@@ -6,8 +6,7 @@ from django.urls import reverse
 from django.template.defaulttags import csrf_token
 import json
 from . import models
-
-
+    
 def home_view(req,**opt):
     curr_date = datetime.datetime.now().strftime("%Y-%m-%d")
     
@@ -51,8 +50,8 @@ def register_view(req,**opt):
         return render(req,'home/register.html',context=context)
     
     if req.method=='POST':
-        user,password,who = req.POST.get('user',None), req.POST.get('password',None), req.POST.get('who',None)
-        if (not user) or (not password) or (who not in ['donor','admin']): return redirect(reverse('register',kwargs={'error':'User not Found'}))
+        who = req.POST['who']
+        if (who not in ['donor','admin']): return redirect(reverse('register',kwargs={'error':'Auth Error'}))
         
         userThis = models.Donor.objects.filter(id=user).values() if who=='donor' else models.Admin.objects.filter(id=user).values()
     

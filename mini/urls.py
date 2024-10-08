@@ -26,5 +26,7 @@ urlpatterns = [
     path('login/<str:error>/',views.login_view,name='login'), # type: ignore
     path('register/',views.register_view,name='register'), # type: ignore
     path('register/<str:error>/',views.register_view,name='register'), # type: ignore
-    path('logout/',views.logout_user,name='logout')
+    path('logout/',views.logout_user,name='logout'),
+    path('camp/<int:id>/', views.camp_view,name='camp'),
+    path('regCamp/<int:id>/',views.regCamp,name='camp_reg')
 ]

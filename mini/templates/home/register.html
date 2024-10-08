@@ -141,7 +141,7 @@
 </head>
 <body>
     <nav>
-        <a href="/">Back</a>
+        <a href="{% url 'home' %}">Back</a>
         <a href="#"></a>
         <a href="#"></a>
     </nav>
@@ -152,15 +152,14 @@
                 <button class="admin" id="off">Admin Register</button>
                 <button class="donor" id="active">Donor Register</button>
             </div>
-
-            {}
-
             <!-- Register Form -->
             <div class="form-box register">
                 <h2>Register</h2>
                 <form action="{% url 'register' %}" method="POST" onsubmit="return check_wrapper();">
                     {% csrf_token %}
+                    <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="user" placeholder="User ID" required>
+                    <input type="date" name="dob" placeholder="YYYY-MM-DD">
                     <input type="password" class="password" name="password" placeholder="Password" required>
                     <input type="password" class="password" name="confirm_password" placeholder="Confirm Password" required>
                     <input type="text" name="who" class="who" value="admin" style="display:none;">
@@ -240,8 +239,6 @@
                     <option value='AB+'>AB+</option>
                     <option value='AB-'>AB-</option>
                 </select>
-
-
             `
     }
 

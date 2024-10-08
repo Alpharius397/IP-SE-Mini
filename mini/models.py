@@ -70,3 +70,11 @@ class Camp(models.Model):
     
     def __str__(self):
         return f"{self.name} - {self.id} - {self.start} => {self.end}"
+    
+class CampReg(models.Model):
+    donor = models.ForeignKey(to=Donor,on_delete=models.CASCADE)
+    camp = models.ForeignKey(to=Camp,on_delete=models.CASCADE)
+    date = models.DateField(blank=False)
+    
+    def __str__(self):
+        return f"{self.id}) User {self.donor} registered from {self.camp} at {self.date}"

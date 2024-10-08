@@ -80,48 +80,23 @@
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>Welcome to the Blood Donation Camp Portal</h1>
-        <p>Your contribution can save lives!</p>
-    </header>
-
     <nav>
-        <a href="/">Home</a>
-        <a href="#"> {% if request.session.user is not None %} Hello, {{request.session.name}} {% else %} Hello, Visitor! {% endif %}</a>
-        <a href="#">
-            {% if request.session.user is not None %}
-                <a href="{% url 'camp_reg' request.session.user %}">Registered Camps</a>
-        {%  endif %}
-
-
-        </a>
+        <a href="{% url 'home' %}">Back</a>
+        <a href="#"></a>
+        <a href="#"></a>
     </nav>
 
     <section>
-        {% if request.session.user %}
-            <div class="login-register">
-                <form action="{% url 'logout' %}" method="post" onsubmit="return alert('Are you sure about this');">
-                    {% csrf_token %}
-                    <input type="submit" value="Logout">
-                </form>
-            </div>
-        {% else %}
-            <div class="login-register">
-                <button onclick="window.location.href='{% url 'login' %}'">Login</button>
-                <button onclick="window.location.href='{% url 'register' %}'">Register</button>
-            </div>
-        {%  endif %}
-        <h2>Upcoming Blood Donation Camps</h2>
 
         <div class="camp-list">
             {% for i in camps %}
             <div class="camp">
-                <h3>Camp {{i.name}}: {{i.loc}}</h3>
-                <p>Hosted By: {{i.owned.name}}</p>
-                <p>Start Date: {{i.start}}</p>
-                <p>End Date: {{i.end}}</p>
-                <button><a href='{% url 'camp' i.id %}'>View Details</a></button>
+                <h3>Camp {{i.camp.name}}: {{i.camp.loc}}</h3>
+                <p>Hosted By: {{i.camp.owned.name}}</p>
+                <p>Start Date: {{i.camp.start}}</p>
+                <p>End Date: {{i.camp.end}}</p>
+                <p>Registered at: {{i.date}}</p>
+                <button><a href='{% url 'camp' i.camp.id %}'>View Details</a></button>
             </div>
             {% endfor %}
 

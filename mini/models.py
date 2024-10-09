@@ -3,15 +3,18 @@ from django.db import models
 from datetime import datetime
 from django.contrib.auth.hashers import make_password, check_password
 
-class BloodTypes(models.TextChoices):
-    AX = "A+"
-    A_ = "A-"
-    BX = "B+"
-    B_ = "B-"
-    OX = "O+"
-    O_ = "O-"
-    ABX = "AB+"
-    AB_ = "AB-"
+
+blood =  (
+            ("A+","A+"),
+            ("A-","A-"),
+            ("AB+","AB+"),
+            ("AB-","AB-"),
+            ("O+","O+"),
+            ("O+","O+"),
+            ("B+","B+"),
+            ("B-","B-"),
+        )
+
 
 class Admin(models.Model):
     
@@ -35,7 +38,7 @@ class Donor(models.Model):
     weight = models.IntegerField()
     height = models.IntegerField()
     addr = models.CharField(max_length=225)
-    blood_type = models.CharField(max_length=3,choices=BloodTypes,blank=False)
+    blood_type = models.CharField(max_length=3,choices=blood,blank=False)
     
     def __str__(self) -> str:
         return f"{self.name} - {self.id}"

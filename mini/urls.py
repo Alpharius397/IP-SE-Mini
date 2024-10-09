@@ -22,10 +22,9 @@ urlpatterns = [
     path('super_admin/', admin.site.urls, name='super-admin'),
     path('', views.home_view,name='home'),
     path('<str:error>', views.home_view,name='home'),
-    path('login/',views.login_view,name='login'), # type: ignore
-    path('login/<str:error>/',views.login_view,name='login'), # type: ignore
-    path('register/',views.register_view,name='register'), # type: ignore
-    path('register/<str:error>/',views.register_view,name='register'), # type: ignore
+    path('login/',views.login_view,name='login'),
+    path('login/<str:error>/',views.login_view,name='login'), 
+    path('register/',views.register_view,name='register'), 
     path('logout/',views.logout_user,name='logout'),
     path('camp/<int:id>/', views.camp_view,name='camp'),
     path('camp/<int:id>/<str:error>', views.camp_view,name='camp'),
@@ -34,3 +33,7 @@ urlpatterns = [
     path('confirm/<int:donor>/<int:camp>/',views.confirm_reg,name='confirm'),
     path('camps_by/<int:id>/',views.camps_all,name='camps_all')
 ]
+
+admin.site.site_header = "System Admin"
+admin.site.site_title = "Admin Portal"
+admin.site.index_title = "Welcome to Blood Bank Management Admin Portal"

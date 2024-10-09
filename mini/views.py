@@ -125,8 +125,8 @@ def camp_view(req,id=-1,**opt):
                 toadd['already'] = True if len(models.CampReg.objects.filter(donor=curr_user,camp=search))>0 else False
             except:
                 pass
-            
-        context = {'camp':search,'admin':req.session['who']}
+        expired = True if search.status=='Closed' else False
+        context = {'camp':search,'admin':req.session['who'],'expired':expired}
         context.update(opt)
         context.update(toadd)
         print(context)

@@ -65,13 +65,13 @@
         <p><strong>End Date:</strong> {{ camp.end }}</p>
         <p><strong>Status</strong> <strong style="color:{{ camp.color }};">{{ camp.status }}</strong></p>
         <br>
-        {% if request.session.user and request.session.who %}
+        {% if not expired and request.session.user and request.session.who %}
             <a><button>Admin cannot register</button></a>
-        {% elif request.session.user and not already %}
+        {% elif not expired and request.session.user and not already %}
             <a href="{% url 'donor_reg' camp.id %}"><button>Register in Camp</button></a>
-        {% elif request.session.user and already %}
+        {% elif not expired and request.session.user and already %}
             <p>Already Registered</p>
-        {% elif not request.session.user %}
+        {% elif not expired and not request.session.user %}
             <p><a href="{% url 'login' %}">Login</a> / <a href="{% url 'register' %}">Register</a> First</p>
         {% endif %}
         

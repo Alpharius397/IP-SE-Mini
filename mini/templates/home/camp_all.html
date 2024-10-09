@@ -80,44 +80,13 @@
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>Welcome to the Blood Donation Camp Portal</h1>
-        <p>Your contribution can save lives!</p>
-    </header>
-
     <nav>
-        <a href="/">Home</a>
-        <a href="#"> {% if request.session.user is not None %} Hello, {{request.session.name}} {% else %} Hello, Visitor! {% endif %}</a>
-        {% if request.session.user and request.session.who %}
-            <a href="{% url 'camps_all' request.session.user %}">Camps Created</a>
-        
-        {% elif request.session.user and not request.session.who %}
-            <a href="{% url 'camp_reg' request.session.user %}">Registered Camps</a>
-        {% else %}
-            <a href="#"></a>
-
-        {%  endif %}
-
-
-        </a>
+        <a href="{% url 'home' %}">Back</a>
+        <a href="#"></a>
+        <a href="#"></a>
     </nav>
 
     <section>
-        {% if request.session.user %}
-            <div class="login-register">
-                <form action="{% url 'logout' %}" method="post" onsubmit="return alert('Are you sure about this');">
-                    {% csrf_token %}
-                    <input type="submit" value="Logout">
-                </form>
-            </div>
-        {% else %}
-            <div class="login-register">
-                <button onclick="window.location.href='{% url 'login' %}'">Login</button>
-                <button onclick="window.location.href='{% url 'register' %}'">Register</button>
-            </div>
-        {%  endif %}
-        <h2>Upcoming Blood Donation Camps</h2>
 
         <div class="camp-list">
             {% for i in camps %}
@@ -126,10 +95,13 @@
                 <p>Hosted By: {{i.owned.name}}</p>
                 <p>Start Date: {{i.start}}</p>
                 <p>End Date: {{i.end}}</p>
-                <button><a href='{% url 'camp' i.id %}'>View Details</a></button>
+                <p>Total Donor: {{i.count}}</p>
+                <p><strong>Status</strong> <strong style="color:{{ i.color }};">{{ i.status }}</strong></p>
+
             </div>
             {% endfor %}
 
+            
         </div>
     </section>
 

@@ -196,4 +196,26 @@ def confirm_reg(req,donor,camp):
                 return redirect(reverse('camp',kwargs={'id':camp.id,'error':"Registred in Camp"}))
             except:
                 return redirect(reverse('camp',kwargs={'id':camp.id,'error':"Error in Registration"}))
-                
+
+def camps_view(req,**opt):
+    return render(req,'home/camp_all.html',context=opt)
+
+def camps_all(req,id):
+    if req.method=="GET":
+        admin_id = req.session.get('user',None)
+        if admin_id is None: return redirect(reverse('home',kwargs={'error':'Auth error'}))
+        
+        camps = list(models.Camp.objects.filter(owned_id=admin_id))
+        
+        if not camps: return redirect(reverse('home',kwargs={'error':'No camps created'}))
+        
+        color = {'Ongoing':'green','Upcoming':'grey','Closed':'red'}
+        
+        for i in range(len(camps)):
+            camps[i].count= len(models.CampReg.objects.filter(camp_id=camps[i].id).values())
+            camps[i].status = get_status(camps[i].start,camps[i].end)
+            camps[i].color = color[camps[i].status]
+        
+        return camps_view(req,camps=camps)        
+        
+    

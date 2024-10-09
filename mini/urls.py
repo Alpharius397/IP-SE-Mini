@@ -31,5 +31,6 @@ urlpatterns = [
     path('camp/<int:id>/<str:error>', views.camp_view,name='camp'),
     path('regCamp/<int:id>/',views.regCamp,name='camp_reg'),
     path('registerCamp/<int:id>/',views.donor_reg,name='donor_reg'),
-    path('confirm/<int:donor>/<int:camp>/',views.confirm_reg,name='confirm')
+    path('confirm/<int:donor>/<int:camp>/',views.confirm_reg,name='confirm'),
+    path('camps_by/<int:id>/',views.camps_all,name='camps_all')
 ]

@@ -46,7 +46,7 @@ def login_view(req,**opt):
         if check_password(password,userThis['passwrd']):
             req.session['name'] = userThis['name']
             req.session['user'] = userThis['id']
-            req.session['who'] = who
+            req.session['who'] = True if who=='admin' else False
             return redirect(reverse('home',kwargs={'error':'User Authethicated, Welcome!'}))
 
         else:
@@ -106,7 +106,7 @@ def get_status(start,end):
     elif curr<end: return 'Ongoing'
     else: return "Closed"
     
-def camp_view(req,id=-1):
+def camp_view(req,id=-1,**opt):
     if req.method=="GET":
         search = models.Camp.objects.filter(id=id)
         
@@ -118,13 +118,23 @@ def camp_view(req,id=-1):
         
         search.status = get_status(search.start,search.end)
         search.color = color[search.status]
-        
-        return render(req,'home/camp.html',context={'camp':search})
+        toadd = {'already':False}
+        if req.session['user'] is not None:
+            try:
+                curr_user = models.Donor.objects.filter(id=req.session['user'])[0] 
+                toadd['already'] = True if len(models.CampReg.objects.filter(donor=curr_user,camp=search))>0 else False
+            except:
+                pass
+            
+        context = {'camp':search,'admin':req.session['who']}
+        context.update(opt)
+        context.update(toadd)
+        print(context)
+        return render(req,'home/camp.html',context=context)
 
 def reg_camp_view(req,**opt):
-    context = {i:j for i,j in opt.items()}
     
-    return render(req,'home/campreg.html',context=context)
+    return render(req,'home/campreg.html',context=opt)
 
 def regCamp(req,id):
     if req.method=='GET':
@@ -132,19 +142,58 @@ def regCamp(req,id):
         curr_user,curr_power = req.session.get('user',None), req.session.get('who',None)
         
         if curr_user is None: return reg_camp_view(req,error='You need to Login!')
-        if curr_power not in ['admin','donor']: 
+        if curr_power not in [True,False]: 
             logout_user(req)
             
             return redirect(reverse('home',kwargs={'error':'Unauthorized Entry'}))
         
         if curr_power=='admin': return reg_camp_view(req,error='You need to be a Donor!')
-        
+
         user = models.Donor.objects.filter(id=curr_user)
         camp = {}
         if user:
             user = user[0]
-            camps = models.CampReg.objects.filter(donor=user)
+            camp = models.CampReg.objects.filter(donor=user)
         
-        return reg_camp_view(req,camps=camps)
+        return reg_camp_view(req,camps=camp)
+
+
+def reg_form(req,**opt):
+    return render(req,'home/donor_reg.html',context=opt)   
+
+def donor_reg(req,id):
+    curr_user = req.session.get('user',None)
+    curr_camp = models.Camp.objects.filter(id=id)
+    
+    if curr_user is None or len(curr_camp)<1: return redirect(reverse('home',kwargs={'error':'Must be logined in'}))
+    
+    user = models.Donor.objects.filter(id=curr_user)[0]
+    curr_camp=curr_camp[0]
+    
+    return reg_form(req,camp=curr_camp,donor=user)
+
+def confirm_reg(req,donor,camp):
+    if req.method=="POST":
+        donor = models.Donor.objects.filter(id=donor)
+        camp = models.Camp.objects.filter(id=camp)
+        
+        if len(donor)<1 or len(camp)<1: return redirect(reverse('home',kwargs={'error':'User or Camp not found'}))
+        
+        donor = donor[0]
+        camp = camp[0]
+        
+        # check for existing:
+        z = models.CampReg.objects.filter(donor=donor,camp=camp)
+        
+        if z:
+            return redirect(reverse('camp',kwargs={'error':"Already Registered"}))
+        else:
+            date = datetime.date.today()
+            z=models.CampReg(donor=donor,camp=camp,date=date)
             
-        
+            try:
+                z.save()
+                return redirect(reverse('camp',kwargs={'id':camp.id,'error':"Registred in Camp"}))
+            except:
+                return redirect(reverse('camp',kwargs={'id':camp.id,'error':"Error in Registration"}))
+                

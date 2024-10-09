@@ -89,9 +89,11 @@
     <nav>
         <a href="/">Home</a>
         <a href="#"> {% if request.session.user is not None %} Hello, {{request.session.name}} {% else %} Hello, Visitor! {% endif %}</a>
-        <a href="#">
-            {% if request.session.user is not None %}
-                <a href="{% url 'camp_reg' request.session.user %}">Registered Camps</a>
+        {% if request.session.user and not request.session.who %}
+            <a href="{% url 'camp_reg' request.session.user %}">Registered Camps</a>
+        {% else %}
+            <a href="#"></a>
+
         {%  endif %}
 
 

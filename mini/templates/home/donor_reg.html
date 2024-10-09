@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details {
+            margin-bottom: 20px;
+        }
+        .details p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e43c3c;
+        }
+        .cancel-button {
+            background-color: #ccc;
+        }
+        .cancel-button:hover {
+            background-color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Confirm Registration</h2>
+        <div class="details">
+            <p><strong>Donor Name:</strong> {{ donor.name }}</p>
+            <p><strong>Camp Name:</strong> {{ camp.name }}</p>
+            <p><strong>Location:</strong> {{ camp.loc }}</p>
+            <p><strong>Start Date:</strong> {{ camp.start }}</p>
+            <p><strong>End Date:</strong> {{ camp.end }}</p>
+        </div>
+
+        <form method="POST" action="{% url 'confirm' donor.id camp.id %}">
+            {% csrf_token %}
+            <button type="submit">Confirm Registration</button>
+        </form>
+
+        <form action="{% url 'donor_reg' camp.id%}" method="GET">
+            <button type="submit" class="cancel-button">Cancel</button>
+        </form>
+    </div>
+
+</body>
+</html>

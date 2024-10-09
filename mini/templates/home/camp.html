@@ -64,7 +64,20 @@
         <p><strong>Start Date:</strong> {{ camp.start }}</p>
         <p><strong>End Date:</strong> {{ camp.end }}</p>
         <p><strong>Status</strong> <strong style="color:{{ camp.color }};">{{ camp.status }}</strong></p>
+        <br>
+        {% if request.session.user and not already %}
+            <a href="{% url 'donor_reg' camp.id %}""><button>Register in Camp</button></a>
+        {% elif request.session.user and admin %}
+            <a><button>Admin cannot register</button></a>
+        {% elif request.session.user and already %}
+            <a><button>Already Registered</button></a>
+        {% elif not request.session.user %}
+            <a><button>Login First</button></a>
+        {% endif %}
         
     </div>
 </body>
+<script>
+    {% if error %} alert('{{error}}'); {% endif %}
+</script>
 </html>

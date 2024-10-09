@@ -70,9 +70,9 @@
         {% elif request.session.user and not already %}
             <a href="{% url 'donor_reg' camp.id %}"><button>Register in Camp</button></a>
         {% elif request.session.user and already %}
-            <a><button>Already Registered</button></a>
+            <p>Already Registered</p>
         {% elif not request.session.user %}
-            <a><button>Login First</button></a>
+            <p><a href="{% url 'login' %}">Login</a> / <a href="{% url 'register' %}">Register</a> First</p>
         {% endif %}
         
     </div>

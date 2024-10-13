@@ -1,0 +1,36 @@
+CREATE TABLE IF NOT EXISTS "auth_group" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(150) NOT NULL UNIQUE);
+
+CREATE TABLE IF NOT EXISTS "auth_user" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "password" varchar(128) NOT NULL, "last_login" datetime NULL, "is_superuser" bool NOT NULL, "username" varchar(150) NOT NULL UNIQUE, "last_name" varchar(150) NOT NULL, "email" varchar(254) NOT NULL, "is_staff" bool NOT NULL, "is_active" bool NOT NULL, "date_joined" datetime NOT NULL, "first_name" varchar(150) NOT NULL);
+
+INSERT INTO auth_user VALUES(1,'pbkdf2_sha256$720000$TXqNkGHisL8usuM4xAn11I$CmDNxjz74G/5RXGwnN5i3CmmKVH4PbvMlgfK+K93zpE=','2024-10-10 04:44:11.098832',1,'omnissiah','','',1,1,'2024-10-09 12:55:13.231922','');
+
+CREATE TABLE IF NOT EXISTS "mini_bank" ("name" varchar(50) NOT NULL, "id" integer NOT NULL PRIMARY KEY, "addr" varchar(225) NOT NULL, "loc" varchar(225) NOT NULL, "capacity" integer NOT NULL, "a_plus" integer NOT NULL, "a_minus" integer NOT NULL, "b_plus" integer NOT NULL, "b_minus" integer NOT NULL, "ab_plus" integer NOT NULL, "ab_minus" integer NOT NULL, "o_plus" integer NOT NULL, "o_minus" integer NOT NULL, "owned_id" integer NOT NULL REFERENCES "mini_admin" ("id") DEFERRABLE INITIALLY DEFERRED);
+
+CREATE TABLE IF NOT EXISTS "mini_camp" ("name" varchar(50) NOT NULL, "id" integer NOT NULL PRIMARY KEY, "addr" varchar(225) NOT NULL, "loc" varchar(225) NOT NULL, "start" date NOT NULL, "end" date NOT NULL, "owned_id" integer NOT NULL REFERENCES "mini_admin" ("id") DEFERRABLE INITIALLY DEFERRED);
+
+INSERT INTO mini_camp VALUES('Istvann 3 Site',1,'Istvann 5','Istvann','2024-10-01','2024-10-09',1);
+
+INSERT INTO mini_camp VALUES('Istvann 5 Site',2,'Istvann 5','Istvann','2024-10-08','2024-10-21',1);
+
+INSERT INTO mini_camp VALUES('Calth Station',3,'Calth','Calth','2024-10-15','2024-10-23',2);
+
+CREATE TABLE IF NOT EXISTS "django_session" ("session_key" varchar(40) NOT NULL PRIMARY KEY, "session_data" text NOT NULL, "expire_date" datetime NOT NULL);
+
+INSERT INTO django_session VALUES('1gft84jr68pbnovurezydv3y66vsgql8','.eJxVzDkOwjAUBNC7_DqyvMUJKSnoOEP0veFAsCU7FgXi7sRSmrQzb-YLtbgME6MdRHw7mODmcq4FOviEBJPHtbgOZqxbmJudF7sjBqdMo3m52Ar7xPhIxKS45UWTRsjRFnJP1q3Xw54OApbQ1p4OXoycUtVrwby0CqVEoYSXUpmee6GpvnB0Gode-5FZzkZBreXC7AB-f6NxQ4o:1syWEx:gI7J_t3ZKJYAEUY6FifQNMoDYCkyHxGLb7xNoJndf-o','2024-10-23 12:56:31.473832');
+
+INSERT INTO django_session VALUES('do95hjzzubv5oqxbr42m3rlehd3mhjfz','.eJxVzDsOwjAQRdG9TB1Z_sUJKSnoWEM0_uFAsCU7FgVi78RSmrRzz5svRHw7mODmcq4FOqjFZZgY7eATEkwe1-I6mLFuYW5tXuzOGZxuGs3LxRbsE-MjEZPilhdNGiFHLeSerFuvhz09CFhCW3s6eDFySlWvBfPSKpQShRJeSmV67oWm-sLRaRx67UdmORsFtZYLswP4_QGpDUOK:1syl23:P9R-B8yj67Z2W_x_IS4V75O5RoqKgGPPndUSrpxTtmc','2024-10-24 04:44:11.103341');
+
+CREATE TABLE IF NOT EXISTS "mini_campreg" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" date NOT NULL, "camp_id" integer NOT NULL REFERENCES "mini_camp" ("id") DEFERRABLE INITIALLY DEFERRED, "donor_id" integer NOT NULL REFERENCES "mini_donor" ("id") DEFERRABLE INITIALLY DEFERRED);
+
+INSERT INTO mini_campreg VALUES(10,'2024-10-10',2,10);
+
+CREATE TABLE IF NOT EXISTS "mini_admin" ("name" varchar(50) NOT NULL, "id" integer NOT NULL PRIMARY KEY, "dob" date NOT NULL, "isAdmin" bool NOT NULL, "isCampOrg" bool NOT NULL, "isHosp" bool NOT NULL, "belongs" varchar(120) NOT NULL, "passwrd" varchar(225) NOT NULL);
+INSERT INTO mini_admin VALUES('Horus',1,'1999-07-20',1,0,0,'Arch-Traitor','pbkdf2_sha256$720000$0PMfHo9V2XFjj1bRnCz1mt$+JdTaLHvqENpRELFbA6dVDwXjK/4GHq82x+LfIV4URs=');
+
+INSERT INTO mini_admin VALUES('Lorgar',2,'2024-10-01',1,0,0,'Word Bearer','pbkdf2_sha256$720000$vgZfBvMefU4ZrTfg50d5xk$r/TW6MCAQlimVcRL4hBhNLMQDdN7T9Wpdz47DnLtUs0=');
+
+CREATE TABLE IF NOT EXISTS "mini_donor" ("name" varchar(50) NOT NULL, "id" integer NOT NULL PRIMARY KEY, "dob" date NOT NULL, "weight" integer NOT NULL, "height" integer NOT NULL, "addr" varchar(225) NOT NULL, "blood_type" varchar(3) NOT NULL, "passwrd" varchar(225) NOT NULL);
+
+INSERT INTO mini_donor VALUES('asd',1,'5222-04-02',12,123,'asd','A+','asd');
+
+INSERT INTO mini_donor VALUES('Ferrus',10,'1010-10-10',150,300,'Medusa','A+','pbkdf2_sha256$720000$PLVT2wxgRf2YY2purYCKKH$Ud/SffohALhX6Qw7s4N4uTWjhcgmmmz+ePi1AxAMDy0=');

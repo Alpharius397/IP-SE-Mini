@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+app_name = 'asd'
 urlpatterns = [
     path('super_admin/', admin.site.urls, name='super-admin'),
     path('', views.home_view,name='home'),
